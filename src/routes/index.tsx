@@ -84,7 +84,7 @@ const SESSIONS: Session[] = [
 ];
 
 function Index() {
-  const [tab, setTab] = useState(SESSIONS[0].id);
+  const [tab, setTab] = useState(SESSIONS[0]!.id);
   const current = SESSIONS.find((s) => s.id === tab)!;
 
   return (
@@ -155,7 +155,7 @@ function Quiz({ questions }: { questions: Question[] }) {
     );
   }
 
-  const q = questions[i];
+  const q = questions[i]!;
   const answered = picked !== null;
 
   return (
