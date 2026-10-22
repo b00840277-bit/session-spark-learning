@@ -175,13 +175,56 @@ function Index() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <p className="text-sm font-bold uppercase tracking-wider text-primary">{current.label}</p>
         <h2 className="mt-1 text-3xl font-extrabold sm:text-4xl">{current.title}</h2>
         <p className="mt-2 text-muted-foreground">
-          Concept match quiz — pick the definition that matches the slides.
+          A recap of what we covered, straight from the course slides — then test yourself with the quiz below.
         </p>
-        {current.questions && <Quiz key={current.id} questions={current.questions} />}
+
+        {current.summary && (
+          <section aria-label="Session summary" className="mt-10 space-y-8">
+            {current.summary.map((card) => (
+              <article
+                key={card.part}
+                className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="rounded-full bg-primary px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-foreground">
+                    {card.part}
+                  </span>
+                  <h3 className="text-lg font-extrabold sm:text-xl">{card.heading}</h3>
+                </div>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {card.items.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-xl border bg-background p-5 transition hover:shadow-md"
+                    >
+                      <h4 className="font-bold text-primary">{item.title}</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                      {item.note && (
+                        <p className="mt-3 rounded-lg bg-secondary px-3 py-2 text-xs font-semibold text-secondary-foreground">
+                          {item.note}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {current.questions && (
+          <section aria-label="Session quiz" className="mt-12">
+            <h3 className="text-2xl font-extrabold sm:text-3xl">Test yourself</h3>
+            <p className="mt-2 text-muted-foreground">
+              Concept match quiz — pick the definition that matches the slides.
+            </p>
+            <Quiz key={current.id} questions={current.questions} />
+          </section>
+        )}
       </main>
     </div>
   );
