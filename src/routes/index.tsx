@@ -5,9 +5,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Guest Speaker Hub | ESSEC Digital Platforms" },
-      { name: "description", content: "Interactive quizzes to consolidate each ESSEC Digital Platforms guest speaker session." },
-      { property: "og:title", content: "ESSEC Digital Platforms - Guest Speaker Hub" },
-      { property: "og:description", content: "Play a quick game after each guest speaker session." },
+    { name: "description", content: "Recap each ESSEC Digital Platforms guest speaker session, then play an interactive quiz to consolidate what you learned." },
+    { property: "og:title", content: "ESSEC Digital Platforms - Guest Speaker Hub" },
+    { property: "og:description", content: "Session recaps plus a quick game after each guest speaker session." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -16,15 +16,72 @@ export const Route = createFileRoute("/")({
 });
 
 type Question = { q: string; options: string[]; answer: number };
-type Session = { id: string; label: string; title: string; active: boolean; questions?: Question[] };
+type SummaryItem = { title: string; body: string; note?: string };
+type SummaryCard = { part: string; heading: string; items: SummaryItem[] };
+type Session = { id: string; label: string; title: string; active: boolean; summary?: SummaryCard[]; questions?: Question[] };
 
-// Add more sessions here: set active: true and provide questions.
+const SESSION1_SUMMARY: SummaryCard[] = [
+  {
+    part: "Part 1",
+    heading: "Front-End Design, Prompting & Workflow",
+    items: [
+      {
+        title: "Effective Prompting",
+        body: "Move from generic requests to structured prompts that spell out your Role, Goal, Target Audience, Core Pages, and Visual Style.",
+      },
+      {
+        title: "Visual Shell & Building",
+        body: "Design the visual shell with Claude Design, then use Handoff to build the code with agentic tools such as Claude Code or Lovable.",
+      },
+    ],
+  },
+  {
+    part: "Part 2",
+    heading: "The Web File Triad, GitHub & Vercel",
+    items: [
+      {
+        title: "Core Files",
+        body: "index.html holds the structure & text, styles.css handles the visual style & responsive layout, and script.js drives interactivity & behavior.",
+      },
+      {
+        title: "Version Control (GitHub)",
+        body: "Manage code through Repositories and understand Fork, Clone, Commit, Push, Pull Request (PR), and Merge.",
+        note: "Lovable connects directly via Settings → GitHub → Connect.",
+      },
+      {
+        title: "Continuous Deployment (Vercel)",
+        body: "Host GitHub repositories online with automatic updates on every Push.",
+      },
+    ],
+  },
+  {
+    part: "Part 3",
+    heading: "Static Site Limits, Auth & Supabase",
+    items: [
+      {
+        title: "Limits of Static Sites",
+        body: "They lack persistent session memory (they forget users) and cannot display live dynamic data.",
+      },
+      {
+        title: "Authentication & Tokens",
+        body: "Sign Up creates a user table entry, Log In checks credentials and issues a temporary token, and Log Out removes that token.",
+      },
+      {
+        title: "Supabase",
+        body: "An open-source Backend-as-a-Service (BaaS) providing authentication and database support, integrated with GitHub, Vercel, and Lovable.",
+      },
+    ],
+  },
+];
+
+// Add more sessions here: set active: true and provide questions + summary.
 const SESSIONS: Session[] = [
   {
     id: "s1",
     label: "Session 1",
-    title: "LaunchLab Vibe Coding",
+    title: "Vibe Coding & Web Dev",
     active: true,
+    summary: SESSION1_SUMMARY,
     questions: [
       {
         q: "According to the slides, what is index.html?",
@@ -118,13 +175,56 @@ function Index() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <p className="text-sm font-bold uppercase tracking-wider text-primary">{current.label}</p>
         <h2 className="mt-1 text-3xl font-extrabold sm:text-4xl">{current.title}</h2>
         <p className="mt-2 text-muted-foreground">
-          Concept match quiz — pick the definition that matches the slides.
+          A recap of what we covered, straight from the course slides — then test yourself with the quiz below.
         </p>
-        {current.questions && <Quiz key={current.id} questions={current.questions} />}
+
+        {current.summary && (
+          <section aria-label="Session summary" className="mt-10 space-y-8">
+            {current.summary.map((card) => (
+              <article
+                key={card.part}
+                className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="rounded-full bg-primary px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-foreground">
+                    {card.part}
+                  </span>
+                  <h3 className="text-lg font-extrabold sm:text-xl">{card.heading}</h3>
+                </div>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {card.items.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-xl border bg-background p-5 transition hover:shadow-md"
+                    >
+                      <h4 className="font-bold text-primary">{item.title}</h4>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                      {item.note && (
+                        <p className="mt-3 rounded-lg bg-secondary px-3 py-2 text-xs font-semibold text-secondary-foreground">
+                          {item.note}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {current.questions && (
+          <section aria-label="Session quiz" className="mt-12">
+            <h3 className="text-2xl font-extrabold sm:text-3xl">Test yourself</h3>
+            <p className="mt-2 text-muted-foreground">
+              Concept match quiz — pick the definition that matches the slides.
+            </p>
+            <Quiz key={current.id} questions={current.questions} />
+          </section>
+        )}
       </main>
     </div>
   );
