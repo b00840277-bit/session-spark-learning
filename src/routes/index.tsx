@@ -18,12 +18,12 @@ export const Route = createFileRoute("/")({
 type Question = { q: string; options: string[]; answer: number };
 type Session = { id: string; label: string; title: string; active: boolean; questions?: Question[] };
 
-// Add more sessions here: set active: true and provide questions.
+// Add more sessions here: set active: true and provide questions + summary.
 const SESSIONS: Session[] = [
   {
     id: "s1",
     label: "Session 1",
-    title: "LaunchLab Vibe Coding",
+    title: "Vibe Coding & Web Dev",
     active: true,
     questions: [
       {
