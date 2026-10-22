@@ -81,6 +81,7 @@ const SESSIONS: Session[] = [
     label: "Session 1",
     title: "Vibe Coding & Web Dev",
     active: true,
+    summary: SESSION1_SUMMARY,
     questions: [
       {
         q: "According to the slides, what is index.html?",
