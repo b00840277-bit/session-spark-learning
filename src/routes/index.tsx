@@ -16,7 +16,63 @@ export const Route = createFileRoute("/")({
 });
 
 type Question = { q: string; options: string[]; answer: number };
-type Session = { id: string; label: string; title: string; active: boolean; questions?: Question[] };
+type SummaryItem = { title: string; body: string; note?: string };
+type SummaryCard = { part: string; heading: string; items: SummaryItem[] };
+type Session = { id: string; label: string; title: string; active: boolean; summary?: SummaryCard[]; questions?: Question[] };
+
+const SESSION1_SUMMARY: SummaryCard[] = [
+  {
+    part: "Part 1",
+    heading: "Front-End Design, Prompting & Workflow",
+    items: [
+      {
+        title: "Effective Prompting",
+        body: "Move from generic requests to structured prompts that spell out your Role, Goal, Target Audience, Core Pages, and Visual Style.",
+      },
+      {
+        title: "Visual Shell & Building",
+        body: "Design the visual shell with Claude Design, then use Handoff to build the code with agentic tools such as Claude Code or Lovable.",
+      },
+    ],
+  },
+  {
+    part: "Part 2",
+    heading: "The Web File Triad, GitHub & Vercel",
+    items: [
+      {
+        title: "Core Files",
+        body: "index.html holds the structure & text, styles.css handles the visual style & responsive layout, and script.js drives interactivity & behavior.",
+      },
+      {
+        title: "Version Control (GitHub)",
+        body: "Manage code through Repositories and understand Fork, Clone, Commit, Push, Pull Request (PR), and Merge.",
+        note: "Lovable connects directly via Settings → GitHub → Connect.",
+      },
+      {
+        title: "Continuous Deployment (Vercel)",
+        body: "Host GitHub repositories online with automatic updates on every Push.",
+      },
+    ],
+  },
+  {
+    part: "Part 3",
+    heading: "Static Site Limits, Auth & Supabase",
+    items: [
+      {
+        title: "Limits of Static Sites",
+        body: "They lack persistent session memory (they forget users) and cannot display live dynamic data.",
+      },
+      {
+        title: "Authentication & Tokens",
+        body: "Sign Up creates a user table entry, Log In checks credentials and issues a temporary token, and Log Out removes that token.",
+      },
+      {
+        title: "Supabase",
+        body: "An open-source Backend-as-a-Service (BaaS) providing authentication and database support, integrated with GitHub, Vercel, and Lovable.",
+      },
+    ],
+  },
+];
 
 // Add more sessions here: set active: true and provide questions + summary.
 const SESSIONS: Session[] = [
