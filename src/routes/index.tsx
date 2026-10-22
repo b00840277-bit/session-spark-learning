@@ -5,9 +5,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Guest Speaker Hub | ESSEC Digital Platforms" },
-      { name: "description", content: "Interactive quizzes to consolidate each ESSEC Digital Platforms guest speaker session." },
-      { property: "og:title", content: "ESSEC Digital Platforms - Guest Speaker Hub" },
-      { property: "og:description", content: "Play a quick game after each guest speaker session." },
+    { name: "description", content: "Recap each ESSEC Digital Platforms guest speaker session, then play an interactive quiz to consolidate what you learned." },
+    { property: "og:title", content: "ESSEC Digital Platforms - Guest Speaker Hub" },
+    { property: "og:description", content: "Session recaps plus a quick game after each guest speaker session." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
